@@ -1,14 +1,14 @@
 using UnityEngine;
 
+// Clase que permite mover o obxecto na escena 3D ao facer clic co rato.
+
 public class FirstScene3DMove : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    // Update chámase unha vez por cada fotograma.
+    // Lanza un raio dende a cámara ata a posición do rato na pantalla.
+    // Se o raio colisiona cun obxecto e se preme o botón esquerdo do rato:
+    //   - Move o obxecto ás coordenadas x e z do punto de colisión, mantendo a posición y actual.
+    //   - Amosa a nova posición na consola.
     void Update()
     {
         RaycastHit hit;

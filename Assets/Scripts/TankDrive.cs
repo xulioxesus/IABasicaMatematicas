@@ -2,8 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 
-// A very simplistic car driving on the x-z plane.
-
 public class TankDrive : MonoBehaviour
 {
     public float speed = 10.0f;
