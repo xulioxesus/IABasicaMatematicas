@@ -2,8 +2,18 @@
 using System.Collections;
 using UnityEngine.UI;
 
+// Clase que permite controlar o movemento dun tanque na escena 3D usando teclas de dirección e modo autopiloto.
+// O tanque pode avanzar, rotar e activar o autopiloto para seguir un obxecto de combustible.
+// Inclúe métodos para calcular ángulos, distancias e controlar o movemento automático cara ao obxecto fuel.
+
 public class TankDrive : MonoBehaviour
 {
+    // speed: velocidade de desprazamento manual.
+    // rotationSpeed: velocidade de rotación manual.
+    // fuel: obxecto de combustible ao que pode seguir o tanque.
+    // autopilot: activa/desactiva o modo automático.
+    // tspeed: velocidade de desprazamento en autopiloto.
+    // rspeed: velocidade de rotación en autopiloto.
     public float speed = 10.0f;
     public float rotationSpeed = 100.0f;
     public GameObject fuel;
@@ -11,17 +21,15 @@ public class TankDrive : MonoBehaviour
     float tspeed = 2f;
     float rspeed = 0.2f;
 
-    void Start()
-    {
-
-    }
-
+    // AutoPilot move o tanque automaticamente cara ao obxecto fuel.
+    // Calcula o ángulo e avanza na dirección actual.
     void AutoPilot()
     {
         CalculateAngle();
         this.transform.position += this.transform.up * tspeed * Time.deltaTime;
     }
 
+    // CalculateAngle calcula o ángulo entre o tanque e o obxecto fuel e rota o tanque cara a el se é necesario.
     void CalculateAngle()
     {
         Vector3 tankForward = transform.up;
@@ -42,18 +50,18 @@ public class TankDrive : MonoBehaviour
 
         if((angle * Mathf.Rad2Deg) > 10)
             this.transform.Rotate(0, 0, angle * Mathf.Rad2Deg * clockwise * rspeed);
-
     }
 
+    // Cross calcula o produto vectorial entre dous vectores.
     Vector3 Cross(Vector3 v, Vector3 w)
     {
         float xMult = v.y * w.z - v.z * w.y;
         float yMult = v.x * w.z - v.z * w.x;
         float zMult = v.x * w.y - v.y * w.x;
-
         return (new Vector3(xMult, yMult, zMult));
     }
 
+    // CalculateDistance calcula a distancia entre o tanque e o obxecto fuel e amosa información na consola.
     float CalculateDistance()
     {
         float distance = Mathf.Sqrt(Mathf.Pow(fuel.transform.position.x - transform.position.x,2) +
@@ -73,22 +81,20 @@ public class TankDrive : MonoBehaviour
         return distance;
     }
 
+    // LateUpdate chámase despois de Update en cada fotograma.
+    // Controla o movemento manual do tanque segundo a entrada do usuario.
+    // Permite activar o modo autopiloto (tecla T) e calcula distancia/ángulo (tecla Espazo).
+    // Se o tanque está preto do fuel, desactiva o autopiloto.
+    // Se está activo, move o tanque automaticamente cara ao fuel.
     void LateUpdate()
     {
-        // Get the horizontal and vertical axis.
-        // By default they are mapped to the arrow keys.
-        // The value is in the range -1 to 1
         float translation = Input.GetAxis("Vertical") * speed;
         float rotation = Input.GetAxis("Horizontal") * rotationSpeed;
 
-        // Make it move 10 meters per second instead of 10 meters per frame...
         translation *= Time.deltaTime;
         rotation *= Time.deltaTime;
 
-        // Move translation along the object's z-axis
         transform.Translate(0, translation, 0);
-
-        // Rotate around our y-axis
         transform.Rotate(0, 0, -rotation);
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -107,6 +113,5 @@ public class TankDrive : MonoBehaviour
 
         if (autopilot)
             AutoPilot();
-
     }
 }
