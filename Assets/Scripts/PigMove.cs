@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Move : MonoBehaviour {
+public class PigMove : MonoBehaviour {
 
     public GameObject goal;
     Vector3 direction;
